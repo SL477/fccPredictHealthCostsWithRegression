@@ -1,0 +1,8 @@
+services:
+    streamlit:
+        image: streamlit/s1:1
+        build: 
+            context: .
+        ports: 
+            - "8501:8501"
+        entrypoint: python3 -m streamlit.cli run app.py

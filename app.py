@@ -9,9 +9,9 @@ st.title("Predict Health Costs With Regression")
 
 from getData import getTestAndTrainingData, getFilePath, getData
 import tensorflow as tf
-from tensorflow import keras
+#from tensorflow import keras
 import numpy as np
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import sys,os
 import pandas as pd
