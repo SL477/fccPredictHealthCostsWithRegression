@@ -9,8 +9,9 @@ st.title("Predict Health Costs With Regression")
 
 from getData import getTestAndTrainingData, getFilePath, getData
 import tensorflow as tf
+#import tflite_runtime.interpreter as tflite
 import numpy as np
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import sys,os
 import pandas as pd
@@ -26,6 +27,7 @@ test_labels = test_dataset.pop('expenses')
 
 # Get from interpreter
 interpreter = tf.lite.Interpreter(model_path="converted_model.tflite")
+#interpreter = tflite.Interpreter(model_path="converted_model.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors
