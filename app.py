@@ -9,7 +9,6 @@ st.title("Predict Health Costs With Regression")
 
 from getData import getTestAndTrainingData, getFilePath, getData
 import tensorflow as tf
-#from tensorflow import keras
 import numpy as np
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
@@ -68,34 +67,6 @@ region = st.sidebar.selectbox(
     ['South West', 'South East', 'North West', 'North East']
 )
 
-d = {
-    'age': [age],
-    'bmi': [bmi],
-    'children': [children],
-    'smoker': [smoker],
-    'female': [sex == 'Female'],
-    'male': [sex == 'Male'],
-    'southwest': [region == 'South West'],
-    'southeast': [region == 'South East'],
-    'northwest': [region == 'North West'],
-    'northeast': [region == 'North East']
-}
-
-df = pd.DataFrame(data=d)
-df['age'] = df['age'].astype(np.int32)
-df['bmi'] = df['bmi'].astype(np.float32)
-df['children'] = df['children'].astype(np.int32)
-df['smoker'] = df['smoker'].astype(np.int32)
-df['female'] = df['female'].astype(np.int32)
-df['male'] = df['male'].astype(np.int32)
-df['southwest'] = df['southwest'].astype(np.int32)
-df['southeast'] = df['southeast'].astype(np.int32)
-df['northwest'] = df['northwest'].astype(np.int32)
-df['northeast'] = df['northeast'].astype(np.int32)
-
-#st.write(df.head())
-#st.write("Your predicted health costs are ${:,.2f}.".format(model.predict(df)[0][0]))
-
 # test interpreted model on input data
 
 inputtensor = interpreter.tensor(interpreter.get_input_details()[0]["index"])
@@ -139,8 +110,9 @@ plt.plot(lims, lims)
 st.pyplot(fig)
 
 # Predict their one
-predict = df.apply(lambda x: InterpreterPredictFromDataFrame(x.age, x.bmi, x.children, x.smoker, x.female, x.male, x.southwest, x.southeast, x.northwest, x.northeast), axis=1)
-st.write("Your predicted health costs are ${:,.2f}.".format(predict[0]))
+predict2 = InterpreterPredictFromDataFrame(age, bmi, children, smoker, sex == 'Female', sex == 'Male', region == 'South West', region == 'South East', region == 'North West', region == 'North East')
+#st.write(predict2)
+st.write("Your predicted health costs are ${:,.2f}.".format(predict2))
 
 #interpreter.set_tensor(input_details[0]['index'], input_data)
 ##interpreter.set_tensor(0, float(age))
