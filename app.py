@@ -21,20 +21,9 @@ import pandas as pd
 
 train_dataset, test_dataset = getTestAndTrainingData(getData())
 
-model = load_model(os.path.join(getFilePath(), 'model.h5'))
-
 # Pop the expenses column off
 train_labels = train_dataset.pop('expenses')
 test_labels = test_dataset.pop('expenses')
-
-loss, mae, mse = model.evaluate(test_dataset, test_labels, verbose=0)
-
-evaluationStr = "Testing set Mean Abs Error: {:,.2f} expenses".format(mae)
-
-st.write(evaluationStr)
-
-# Plot the predictions
-test_predictions = model.predict(test_dataset).flatten()
 
 # Get from interpreter
 interpreter = tf.lite.Interpreter(model_path="converted_model.tflite")
@@ -43,18 +32,6 @@ interpreter.allocate_tensors()
 # Get input and output tensors
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
-
-fig, ax = plt.subplots()
-a = plt.axes(aspect='equal')
-plt.scatter(test_labels, test_predictions)
-plt.xlabel('True Values (expenses)')
-plt.ylabel('Predictions (expenses)')
-plt.title('Predicted Expenses vs Actual Expenses')
-lims = [0, 5000]
-plt.xlim(lims)
-plt.ylim(lims)
-plt.plot(lims, lims)
-st.pyplot(fig)
 
 # Predict Health costs
 age = st.sidebar.slider(
@@ -116,31 +93,54 @@ df['southeast'] = df['southeast'].astype(np.int32)
 df['northwest'] = df['northwest'].astype(np.int32)
 df['northeast'] = df['northeast'].astype(np.int32)
 
-st.write("## Predicted Health Costs")
 #st.write(df.head())
-st.write("Your predicted health costs are ${:,.2f}.".format(model.predict(df)[0][0]))
+#st.write("Your predicted health costs are ${:,.2f}.".format(model.predict(df)[0][0]))
 
 # test interpreted model on input data
 
-st.write('tensor')
 inputtensor = interpreter.tensor(interpreter.get_input_details()[0]["index"])
 outputtensor = interpreter.tensor(interpreter.get_output_details()[0]["index"])
 #st.write(inputtensor())
 
-inputtensor()[0][0] = float(age)
-inputtensor()[0][1] = float(bmi)
-inputtensor()[0][2] = float(children)
-inputtensor()[0][3] = float(smoker)
-inputtensor()[0][4] = float(sex == 'Female')
-inputtensor()[0][5] = float(sex == 'Male')
-inputtensor()[0][6] = float(region == 'South West')
-inputtensor()[0][7] = float(region == 'South East')
-inputtensor()[0][8] = float(region == 'North West')
-inputtensor()[0][9] = float(region == 'North East')
-st.write(inputtensor())
-interpreter.invoke()
-st.write(outputtensor())
-st.write("Your predicted health costs are ${:,.2f}.".format(outputtensor()[0][0]))
+def InterpreterPredictFromDataFrame(age, bmi, children, smoker, female, male, southwest, southeast, northwest, northeast):
+    '''
+    This is to input a dataframe and get the results from that
+    Unfortunately the easy way of setting the tensor through interpreter.set_tensor(input_details[0]['index'], input_data) decided not to work
+    '''
+    inputtensor()[0][0] = age
+    inputtensor()[0][1] = bmi
+    inputtensor()[0][2] = children
+    inputtensor()[0][3] = smoker
+    inputtensor()[0][4] = female
+    inputtensor()[0][5] = male
+    inputtensor()[0][6] = southwest
+    inputtensor()[0][7] = southeast
+    inputtensor()[0][8] = northwest
+    inputtensor()[0][9] = northeast
+    interpreter.invoke()
+    return outputtensor()[0][0]
+
+
+
+# Predict the graph
+
+test_predictions2 = test_dataset.apply(lambda x: InterpreterPredictFromDataFrame(x.age, x.bmi, x.children, x.smoker, x.female, x.male, x.southwest, x.southeast, x.northwest, x.northeast), axis=1)
+
+fig, ax = plt.subplots()
+a = plt.axes(aspect='equal')
+plt.scatter(test_labels, test_predictions2)
+plt.xlabel('True Values (expenses)')
+plt.ylabel('Predictions (expenses)')
+plt.title('Predicted Expenses vs Actual Expenses')
+lims = [0, 5000]
+plt.xlim(lims)
+plt.ylim(lims)
+plt.plot(lims, lims)
+st.pyplot(fig)
+
+# Predict their one
+predict = df.apply(lambda x: InterpreterPredictFromDataFrame(x.age, x.bmi, x.children, x.smoker, x.female, x.male, x.southwest, x.southeast, x.northwest, x.northeast), axis=1)
+st.write("Your predicted health costs are ${:,.2f}.".format(predict[0]))
 
 #interpreter.set_tensor(input_details[0]['index'], input_data)
 ##interpreter.set_tensor(0, float(age))
