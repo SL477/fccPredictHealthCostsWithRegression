@@ -121,45 +121,29 @@ st.write("## Predicted Health Costs")
 st.write("Your predicted health costs are ${:,.2f}.".format(model.predict(df)[0][0]))
 
 # test interpreted model on input data
-st.write(input_details[0])
-st.write('shape')
-st.write(input_details[0]['shape'])
-input_data = np.array(
-    [
-        float(age),
-        float(bmi),
-        float(children),
-        float(smoker),
-        float(sex == 'Female'),
-        float(sex == 'Male'),
-        float(region == 'South West'),
-        float(region == 'South East'),
-        float(region == 'North West'),
-        float(region == 'North East')
-    ]
-)
-#input_data = np.array([1.0],[input_data])
-st.write("input_data")
-st.write(input_data)
-st.write("input_data.dtype")
-st.write(input_data.dtype)
-st.write(df.head())
-st.write("interpreter.get_input_details()")
-st.write(interpreter.get_input_details())
 
-input_data2 = np.array(np.random.random_sample(input_details[0]['shape']), dtype=np.float64)
-st.write("input data 2")
-st.write(input_data2)
-st.write("got tensor")
-st.write(interpreter.get_tensor(input_details[0]['index']))
-st.write(type(interpreter.get_tensor(input_details[0]['index'])))
-st.write(interpreter.get_tensor(input_details[0]['index']).dtypes)
-st.write([x.dtype for x in interpreter.get_tensor(input_details[0]['index'])[0]])
-#st.write(interpreter.get_tensor(input_details[0]['dense_input']))
-input_data = interpreter.get_tensor(input_details[0]['index'])
-input_data[0][0] = float(age) * 1.0000
-st.write(input_data)
-interpreter.set_tensor(input_details[0]['index'], df)
+st.write('tensor')
+inputtensor = interpreter.tensor(interpreter.get_input_details()[0]["index"])
+outputtensor = interpreter.tensor(interpreter.get_output_details()[0]["index"])
+#st.write(inputtensor())
+
+inputtensor()[0][0] = float(age)
+inputtensor()[0][1] = float(bmi)
+inputtensor()[0][2] = float(children)
+inputtensor()[0][3] = float(smoker)
+inputtensor()[0][4] = float(sex == 'Female')
+inputtensor()[0][5] = float(sex == 'Male')
+inputtensor()[0][6] = float(region == 'South West')
+inputtensor()[0][7] = float(region == 'South East')
+inputtensor()[0][8] = float(region == 'North West')
+inputtensor()[0][9] = float(region == 'North East')
+st.write(inputtensor())
 interpreter.invoke()
+st.write(outputtensor())
+st.write("Your predicted health costs are ${:,.2f}.".format(outputtensor()[0][0]))
+
+#interpreter.set_tensor(input_details[0]['index'], input_data)
+##interpreter.set_tensor(0, float(age))
+#interpreter.invoke()
 
 #https://www.tensorflow.org/lite/guide/inference
