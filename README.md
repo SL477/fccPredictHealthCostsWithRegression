@@ -2,6 +2,8 @@
 I used my script at https://colab.research.google.com/drive/1lmV4xnToA9_rpmDHTrjD99WCdUqFrw11#scrollTo=3G91tB76GpV5 to save the model
 I made this model as part of the FreeCodeCamp challenges
 
+![Screenshot of app](https://link477.com/dataScience/HealthCostPredictions.JPG)
+
 ## Docker
 Build with:
 docker image build -t healthcostpredictor .
