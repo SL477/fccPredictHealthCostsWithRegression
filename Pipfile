@@ -4,8 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pandas = "*"
+matplotlib = "*"
+streamlit = "*"
 
 [dev-packages]
+jupyterlab = "*"
+scikit-learn = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"
