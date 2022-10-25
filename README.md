@@ -1,12 +1,23 @@
 # Predict Health Costs With Regression
-I used my script at https://colab.research.google.com/drive/1lmV4xnToA9_rpmDHTrjD99WCdUqFrw11#scrollTo=3G91tB76GpV5 to save the model
-I made this model as part of the FreeCodeCamp challenges
 
-![Screenshot of app](https://link477.com/dataScience/HealthCostPredictions.JPG)
+I made this model as part of the FreeCodeCamp challenges, but then updated it to use a scikit-learn model and made a Streamlit app.
+
+![Screenshot of app](HealthCostPredictions.jpg)
 
 ## Docker
+
 Build with:
-docker image build -t healthcostpredictor .
+> docker image build -t healthcostpredictor .
 
 Run with:
-docker run -p 8501:8501 healthcostpredictor
+> docker run -p 8501:8501 healthcostpredictor
+
+## Get the data
+
+Get the data by using:
+> make getdata
+
+## Running
+
+Run with:
+> streamlit run main.py

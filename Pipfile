@@ -7,11 +7,15 @@ name = "pypi"
 pandas = "*"
 matplotlib = "*"
 streamlit = "*"
+scikit-learn = "*"
 
 [dev-packages]
 jupyterlab = "*"
-scikit-learn = "*"
 flake8 = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+get_data = "make getdata"
+run_app = "streamlit run main.py"
