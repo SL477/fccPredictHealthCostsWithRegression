@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+matplotlib = "*"
+streamlit = "*"
+scikit-learn = "*"
+
+[dev-packages]
+jupyterlab = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+get_data = "make getdata"
+run_app = "streamlit run main.py"
