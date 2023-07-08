@@ -7,17 +7,29 @@ I made this model as part of the FreeCodeCamp challenges, but then updated it to
 ## Docker
 
 Build with:
-> docker image build -t healthcostpredictor .
+
+```bash
+docker image build -t healthcostpredictor .
+```
 
 Run with:
-> docker run -p 8501:8501 healthcostpredictor
+
+```bash
+docker run -p 8501:8501 healthcostpredictor
+```
 
 ## Get the data
 
 Get the data by using:
-> make getdata
+
+```bash
+make getdata
+```
 
 ## Running
 
 Run with:
-> streamlit run main.py
+
+```bash
+streamlit run main.py
+```
