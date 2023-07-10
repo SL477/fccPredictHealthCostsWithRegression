@@ -15,7 +15,7 @@ docker image build -t healthcostpredictor .
 Run with:
 
 ```bash
-docker run -p 8501:8501 healthcostpredictor
+docker run -d -p 8501:8501 healthcostpredictor
 ```
 
 ## Get the data
