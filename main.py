@@ -8,7 +8,7 @@ from src.infer import infer
 # Update title and icon
 st.set_page_config(
     page_title="Predict Health Costs With Regression",
-    page_icon='https://link477.com/images/link477.png'
+    page_icon='https://link477.com/assets/images/link477.png'
 )
 
 st.title("Predict Health Costs With Regression")
