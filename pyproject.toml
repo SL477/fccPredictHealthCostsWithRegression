@@ -1,8 +1,8 @@
 [project]
 name = "fccPredictHealthCostsWithRegression"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
-    {name="Thomas Fishwick", email="fishwickt@gmail.com"},
+    {name="Thomas Fishwick"},
 ]
 description = "Predict Health Costs With Regression for FreeCodeCamp"
 readme = "README.md"
